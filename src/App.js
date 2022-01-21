@@ -1,7 +1,10 @@
-import logo from "./logo.svg";
-import "./App.css";
+import { useState } from 'react'
+import './App.css'
 
 function App() {
+  const [monitorText, setMonitorText] = useState()
+  const handleNumberOnClick = (number) => () => setMonitorText(number)
+
   return (
     <div className="App">
       <div class="machine">
@@ -56,97 +59,78 @@ function App() {
             <img
               class="picker pA1"
               src="https://cdn-icons-png.flaticon.com/512/6142/6142218.png"
-            ></img>
+              alt=""
+            />
             <img
               class="picker pA2"
               src="https://cdn-icons-png.flaticon.com/512/6142/6142218.png"
-            ></img>
+              alt=""
+            />
             <img
               class="picker pA3"
               src="https://cdn-icons-png.flaticon.com/512/6142/6142218.png"
+              alt=""
             ></img>
             <img
               class="picker pB4"
               src="https://cdn-icons-png.flaticon.com/512/6142/6142218.png"
-            ></img>
+              alt=""
+            />
             <img
               class="picker pB5"
               src="https://cdn-icons-png.flaticon.com/512/6142/6142218.png"
-            ></img>
+              alt=""
+            />
             <img
               class="picker pB6"
               src="https://cdn-icons-png.flaticon.com/512/6142/6142218.png"
-            ></img>
+              alt=""
+            />
             <img
               class="picker pC7"
               src="https://cdn-icons-png.flaticon.com/512/6142/6142218.png"
-            ></img>
+              alt=""
+            />
             <img
               class="picker pC8"
               src="https://cdn-icons-png.flaticon.com/512/6142/6142218.png"
-            ></img>
+              alt=""
+            />
             <img
               class="picker pC9"
               src="https://cdn-icons-png.flaticon.com/512/6142/6142218.png"
-            ></img>
+              alt=""
+            />
           </div>
         </div>
 
         <div class="order">
           <div class="container">
-            <input type="text" class="visualize" id="display" readonly></input>
+            <input type="text" class="visualize" id="display" readonly value={monitorText} />
             <div class="buttons">
-              <button class="btn letter" value="A">
-                A
-              </button>
-              <button class="btn letter" value="B">
-                B
-              </button>
-              <button class="btn letter" value="C">
-                C
-              </button>
-              <button class="btn number" value="1">
-                1
-              </button>
-              <button class="btn number" value="2">
-                2
-              </button>
-              <button class="btn number" value="3">
-                3
-              </button>
-              <button class="btn number" value="4">
-                4
-              </button>
-              <button class="btn number" value="5">
-                5
-              </button>
-              <button class="btn number" value="6">
-                6
-              </button>
-              <button class="btn number" value="7">
-                7
-              </button>
-              <button class="btn number" value="8">
-                8
-              </button>
-              <button class="btn number" value="9">
-                9
-              </button>
+              {Array.from(Array(9), (_, i) => i + 1).map((number) => (
+                <button class="btn number" key={number} onClick={handleNumberOnClick(number)}>
+                  {number}
+                </button>
+              ))}
             </div>
+            <button class="btn number" style={{ width: '100%' }}>
+              購買
+            </button>
           </div>
           <div class="coins">
             <div class="money">
-              <div class="circle"></div>
+              <div class="circle">投幣孔</div>
             </div>
           </div>
         </div>
 
         <div class="grab">
-          <div class="rectangle"></div>
+          <div class="rectangle">商品從這邊出來</div>
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
