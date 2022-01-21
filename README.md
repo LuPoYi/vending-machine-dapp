@@ -7,6 +7,7 @@ DApp 設計就是一個自動販賣機
 
 #### 開發流程
 
+- 實作基本component
 - 實作前端操作行為
 - 實作 smart contract
 - 串接 smart contract
