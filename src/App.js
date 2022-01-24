@@ -1,9 +1,17 @@
 import { useState } from 'react'
+import { ToastContainer, toast } from 'react-toastify'
 import './App.css'
+import 'react-toastify/dist/ReactToastify.css'
 
 function App() {
-  const [monitorText, setMonitorText] = useState()
-  const handleNumberOnClick = (number) => () => setMonitorText(number)
+  const [monitorText, setMonitorText] = useState('')
+  const handleNumberOnClick = (number) => () =>
+    monitorText.length === 1 && setMonitorText(`${monitorText}${number}`)
+  const handleRowOnClick = (row) => () => setMonitorText(row)
+  const handleConnectWalletOnClick = () => {
+    toast('這邊會去連錢包')
+    setMonitorText('')
+  }
 
   return (
     <div className="App">
@@ -108,6 +116,11 @@ function App() {
           <div class="container">
             <input type="text" class="visualize" id="display" readonly value={monitorText} />
             <div class="buttons">
+              {['A', 'B', 'C'].map((row) => (
+                <button class="btn number" key={row} onClick={handleRowOnClick(row)}>
+                  {row}
+                </button>
+              ))}
               {Array.from(Array(9), (_, i) => i + 1).map((number) => (
                 <button class="btn number" key={number} onClick={handleNumberOnClick(number)}>
                   {number}
@@ -118,7 +131,7 @@ function App() {
               購買
             </button>
           </div>
-          <div class="coins">
+          <div class="coins" onClick={handleConnectWalletOnClick}>
             <div class="money">
               <div class="circle">投幣孔</div>
             </div>
@@ -129,6 +142,8 @@ function App() {
           <div class="rectangle">商品從這邊出來</div>
         </div>
       </div>
+
+      <ToastContainer />
     </div>
   )
 }
