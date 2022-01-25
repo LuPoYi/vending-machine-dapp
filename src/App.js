@@ -12,6 +12,9 @@ function App() {
     toast('這邊會去連錢包')
     setMonitorText('')
   }
+  const handlePurchaseOnClick = () => {
+    toast('購買 - 走錢包付款流程')
+  }
 
   return (
     <div className="App">
@@ -127,7 +130,7 @@ function App() {
                 </button>
               ))}
             </div>
-            <button class="btn number" style={{ width: '100%' }}>
+            <button class="btn number" style={{ width: '100%' }} onClick={handlePurchaseOnClick}>
               購買
             </button>
           </div>
