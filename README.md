@@ -12,3 +12,9 @@ DApp 設計就是一個自動販賣機
 - 實作 smart contract
 - 串接 smart contract
 - 販賣機 redesign
+
+
+#### Smart contract
+
+- 玩家可以自行上架商品(token or NFT)
+- 玩家可以購買商品
