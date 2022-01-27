@@ -5,14 +5,54 @@ import { ToastContainer, toast } from 'react-toastify'
 import './App.css'
 import 'react-toastify/dist/ReactToastify.css'
 import { injected } from './components/wallet/connectors'
+import VendingMachineAbi from './abis/VendingMachine.json'
 
 function App() {
+  const contractAddress = '0xaf9c08912cc04c0556c643fa7216ade32ea36506'
+  const provider = new ethers.getDefaultProvider(4)
   const [monitorText, setMonitorText] = useState('')
   const [signer, setSigner] = useState()
+  const [contractWithProvider, setContractWithProvider] = useState()
+  const [contractWithSigner, setContractWithSigner] = useState()
+  const [products, setProducts] = useState([])
   const { active, account, library, chainId, activate, deactivate } = useWeb3React()
 
+  const fetchProducts = async (provider) => {
+    let _products = []
+    const tokenID = (await provider.tokenID()).toString()
+
+    for (let i = 1; i <= tokenID; i++) {
+      const _product = await provider.stores(i)
+      _products.push({ name: _product.name, count: _product.count.toString() })
+    }
+
+    setProducts(_products)
+  }
+
   useEffect(() => {
-    library && setSigner(library.getSigner())
+    const fetchContract = async () => {
+      const _signer = library.getSigner()
+      setSigner(_signer)
+
+      const _contractWithSigner = new ethers.Contract(
+        contractAddress,
+        VendingMachineAbi.abi,
+        _signer
+      )
+      setContractWithSigner(_contractWithSigner)
+
+      const _contractWithProvider = new ethers.Contract(
+        contractAddress,
+        VendingMachineAbi.abi,
+        provider
+      )
+      setContractWithProvider(_contractWithProvider)
+
+      // fetch products and build the view
+      fetchProducts(_contractWithProvider)
+    }
+
+    if (library) fetchContract()
   }, [library, account])
 
   const handleNumberOnClick = (number) => () =>
@@ -30,14 +70,6 @@ function App() {
     setMonitorText('')
   }
 
-  const handleConnectWalletOnClick2 = () => async () => {
-    try {
-      await activate(injected)
-    } catch (ex) {
-      console.log(ex)
-    }
-  }
-
   const handleDisconnectWalletOnClick = async () => {
     try {
       deactivate()
@@ -46,16 +78,29 @@ function App() {
     }
   }
 
-  const handlePurchaseOnClick = () => {
+  const handlePurchaseOnClick = async () => {
     if (!active) return
     toast('購買 - 走錢包付款流程')
-    signer
-      .sendTransaction({
-        to: '0xB591E90863fd37dD38241457001E10e6a8F71Bb3',
-        value: ethers.utils.parseEther('0.1'),
-      })
-      .then(({ hash }) => toast(`Transaction sent. TXID: ${hash}`))
-      .catch((error) => console.log('sendTransaction error', error))
+
+    const tx = await contractWithSigner.purchase(monitorText.replace(/[^\d]/g, ''))
+    toast(tx)
+    await tx.wait()
+    toast('confirm!')
+
+    // rebuild view
+    fetchProducts(contractWithProvider)
+  }
+
+  const handleListItemForSale = async () => {
+    if (!active) return
+    toast('上架')
+
+    const tx = await contractWithSigner.listItemForSale('Cat', 5)
+    toast(tx)
+    await tx.wait()
+    toast('confirm!')
+
+    fetchProducts(contractWithProvider)
   }
 
   return (
@@ -78,15 +123,15 @@ function App() {
             <p className="option C9">C9</p>
           </div>
 
-          <div className="item">
-            <img className="image eA1" src="https://picsum.photos/200" alt="" />
-          </div>
-          <div className="item">
-            <img className="image eA2" src="https://picsum.photos/200" alt="" />
-          </div>
-          <div className="item">
-            <img className="image eA3" src="https://picsum.photos/200" alt="" />
-          </div>
+          {products.map(({ name, count }, index) => (
+            <div className="item" key={index}>
+              <img
+                className={`image eA${index + 1}`}
+                src={`https://fakeimg.pl/200x200/?text=${name}_${count}`}
+                alt=""
+              />
+            </div>
+          ))}
 
           <div className="item">
             <img className="image eB4" src="https://picsum.photos/200" alt="" />
@@ -108,7 +153,7 @@ function App() {
             <img className="image eC9" src="https://picsum.photos/200" alt="" />
           </div>
 
-          <div className="selector">
+          {/* <div className="selector">
             <img
               className="picker pA1"
               src="https://cdn-icons-png.flaticon.com/512/6142/6142218.png"
@@ -154,7 +199,7 @@ function App() {
               src="https://cdn-icons-png.flaticon.com/512/6142/6142218.png"
               alt=""
             />
-          </div>
+          </div> */}
         </div>
 
         <div className="order">
@@ -178,6 +223,14 @@ function App() {
               onClick={handlePurchaseOnClick}
             >
               購買
+            </button>
+
+            <button
+              className="btn number"
+              style={{ width: '100%' }}
+              onClick={handleListItemForSale}
+            >
+              上架
             </button>
           </div>
           <div className="coins">
