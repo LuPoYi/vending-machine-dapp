@@ -5,6 +5,7 @@ import { ToastContainer, toast } from 'react-toastify'
 import './App.css'
 import 'react-toastify/dist/ReactToastify.css'
 import { injected } from './components/wallet/connectors'
+import LaunchForm from './components/LaunchForm'
 import VendingMachineAbi from './abis/VendingMachine.json'
 
 function App() {
@@ -91,17 +92,19 @@ function App() {
     fetchProducts(contractWithProvider)
   }
 
-  const handleListItemForSale = async () => {
-    if (!active) return
-    toast('上架')
+  const handleListItemForSaleOnClick =
+    ({ name, count }) =>
+    async () => {
+      if (!active) return
+      toast('上架')
 
-    const tx = await contractWithSigner.listItemForSale('Cat', 5)
-    toast(tx)
-    await tx.wait()
-    toast('confirm!')
+      const tx = await contractWithSigner.listItemForSale(name, count)
+      toast(tx)
+      await tx.wait()
+      toast('confirm!')
 
-    fetchProducts(contractWithProvider)
-  }
+      fetchProducts(contractWithProvider)
+    }
 
   return (
     <div className="App">
@@ -228,7 +231,7 @@ function App() {
             <button
               className="btn number"
               style={{ width: '100%' }}
-              onClick={handleListItemForSale}
+              onClick={handleListItemForSaleOnClick}
             >
               上架
             </button>
@@ -253,6 +256,8 @@ function App() {
           <div className="rectangle">商品從這邊出來</div>
         </div>
       </div>
+
+      <LaunchForm handleListItemForSaleOnClick={handleListItemForSaleOnClick} />
 
       <ToastContainer />
     </div>
