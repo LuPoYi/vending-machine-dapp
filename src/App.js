@@ -6,6 +6,8 @@ import './App.css'
 import 'react-toastify/dist/ReactToastify.css'
 import { injected } from './components/wallet/connectors'
 import LaunchForm from './components/LaunchForm'
+import Product from './components/Product'
+
 import VendingMachineAbi from './abis/VendingMachine.json'
 
 function App() {
@@ -109,100 +111,16 @@ function App() {
   return (
     <div className="App">
       <div className="machine">
-        <div className="items">
-          <div className="shelf" id="one">
-            <p className="option A1">A1</p>
-            <p className="option A2">A2</p>
-            <p className="option A3">A3</p>
-          </div>
-          <div className="shelf" id="two">
-            <p className="option B4">B4</p>
-            <p className="option B5">B5</p>
-            <p className="option B6">B6</p>
-          </div>
-          <div className="shelf" id="three">
-            <p className="option C7">C7</p>
-            <p className="option C8">C8</p>
-            <p className="option C9">C9</p>
-          </div>
-
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+          }}
+        >
           {products.map(({ name, count }, index) => (
-            <div className="item" key={index}>
-              <img
-                className={`image eA${index + 1}`}
-                src={`https://fakeimg.pl/200x200/?text=${name}_${count}`}
-                alt=""
-              />
-            </div>
+            <Product key={index} imageUrl={`https://fakeimg.pl/200x200/?text=${name}_${count}`} />
           ))}
-
-          <div className="item">
-            <img className="image eB4" src="https://picsum.photos/200" alt="" />
-          </div>
-          <div className="item">
-            <img className="image eB5" src="https://picsum.photos/200" alt="" />
-          </div>
-          <div className="item">
-            <img className="image eB6" src="https://picsum.photos/200" alt="" />
-          </div>
-
-          <div className="item">
-            <img className="image eC7" src="https://picsum.photos/200" alt="" />
-          </div>
-          <div className="item">
-            <img className="image eC8" src="https://picsum.photos/200" alt="" />
-          </div>
-          <div className="item">
-            <img className="image eC9" src="https://picsum.photos/200" alt="" />
-          </div>
-
-          {/* <div className="selector">
-            <img
-              className="picker pA1"
-              src="https://cdn-icons-png.flaticon.com/512/6142/6142218.png"
-              alt=""
-            />
-            <img
-              className="picker pA2"
-              src="https://cdn-icons-png.flaticon.com/512/6142/6142218.png"
-              alt=""
-            />
-            <img
-              className="picker pA3"
-              src="https://cdn-icons-png.flaticon.com/512/6142/6142218.png"
-              alt=""
-            ></img>
-            <img
-              className="picker pB4"
-              src="https://cdn-icons-png.flaticon.com/512/6142/6142218.png"
-              alt=""
-            />
-            <img
-              className="picker pB5"
-              src="https://cdn-icons-png.flaticon.com/512/6142/6142218.png"
-              alt=""
-            />
-            <img
-              className="picker pB6"
-              src="https://cdn-icons-png.flaticon.com/512/6142/6142218.png"
-              alt=""
-            />
-            <img
-              className="picker pC7"
-              src="https://cdn-icons-png.flaticon.com/512/6142/6142218.png"
-              alt=""
-            />
-            <img
-              className="picker pC8"
-              src="https://cdn-icons-png.flaticon.com/512/6142/6142218.png"
-              alt=""
-            />
-            <img
-              className="picker pC9"
-              src="https://cdn-icons-png.flaticon.com/512/6142/6142218.png"
-              alt=""
-            />
-          </div> */}
         </div>
 
         <div className="order">
