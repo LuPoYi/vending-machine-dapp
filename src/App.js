@@ -111,13 +111,7 @@ function App() {
   return (
     <div className="App">
       <div className="machine">
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            flexWrap: 'wrap',
-          }}
-        >
+        <div className="items">
           {products.map(({ name, count }, index) => (
             <Product key={index} imageUrl={`https://fakeimg.pl/200x200/?text=${name}_${count}`} />
           ))}
@@ -127,11 +121,6 @@ function App() {
           <div className="container">
             <input type="text" className="visualize" id="display" readOnly value={monitorText} />
             <div className="buttons">
-              {['A', 'B', 'C'].map((row) => (
-                <button className="btn number" key={row} onClick={handleRowOnClick(row)}>
-                  {row}
-                </button>
-              ))}
               {Array.from(Array(9), (_, i) => i + 1).map((number) => (
                 <button className="btn number" key={number} onClick={handleNumberOnClick(number)}>
                   {number}

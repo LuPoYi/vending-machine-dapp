@@ -24,6 +24,9 @@ body {
   grid-template-columns: 2fr 1fr;
   grid-template-rows: 2fr 1fr;
   grid-template-areas: 'items order' 'grab grab';
+
+  grid-template-columns: 2fr 1fr;
+  grid-template-rows: auto 1fr;
 }
 
 .selector {
@@ -78,7 +81,7 @@ body {
 
 .items {
   background-color: rgb(192, 192, 192);
-  grid-area: 'items';
+  grid-area: items;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 0.5em;
@@ -92,7 +95,7 @@ body {
 
 .order {
   background-color: rgb(100, 108, 119);
-  grid-area: 'order';
+  grid-area: order;
   display: grid;
   grid-template-rows: 2fr 1fr;
   grid-template-areas: 'container' 'coins';
@@ -102,7 +105,7 @@ body {
   width: 85%;
   margin: auto;
   margin-top: 5em;
-  grid-area: 'container';
+  grid-area: container;
 }
 
 .visualize {
@@ -134,7 +137,7 @@ body {
   background-color: rgb(66, 73, 83);
   width: 7em;
   margin: auto;
-  grid-area: 'coins';
+  grid-area: coins;
 }
 
 .money {
@@ -157,7 +160,7 @@ body {
   background-color: rgb(100, 108, 119);
   height: 10em;
   border-radius: 10px;
-  grid-area: 'grab';
+  grid-area: grab;
 }
 
 .rectangle {
