@@ -106,6 +106,17 @@ function App() {
       fetchProducts(contractWithProvider)
     }
 
+  const estimateGasCost = async () => {
+    const gasPrice = await provider.getGasPrice()
+    const gasLimit = await provider.estimateGas({
+      // ... to: 'xxx',
+      // ... data: 'xxx',
+      // ... to: 'xxx',
+    })
+    const price = (await gasPrice) * gasLimit.toNumber()
+    // => rough estimate
+  }
+
   return (
     <div className="App">
       <div className="machine">
